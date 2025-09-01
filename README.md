@@ -44,7 +44,7 @@ Characters (letters, digits, symbols) are converted into numbers using a custom 
 
 ### 🔁 Decryption
 
-- Input **all shares in the correct order**.
+- Input **all shares**.
 - The message is reconstructed by summing the numerical values of the shares (mod 100).
 - Output is decoded back into readable characters.
 
