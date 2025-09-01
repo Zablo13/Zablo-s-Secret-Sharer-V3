@@ -55,13 +55,13 @@ Characters (letters, digits, symbols) are converted into numbers using a custom 
 ### Encrypt (2-share mode)
 
 ```text
-Message: HELLO
-Code1/2: QWERT
-→ Output: Code2/2: YX@8M
+Message: Hello_World
+Code1/2: use_good_random_numbers_here
+→ Output: Code2/2: z²7/8G+B<Ö3ISHJ1IBJURED1ORER
 
-Code1: QWERT
-Code2: YX@8M
-→ Message: HELLO
+Code1: use_good_random_numbers_here
+Code2: z²7/8G+B<Ö3ISHJ1IBJURED1ORER
+→ Message: Hello_World
 
 
 🎲 Why secrets?
