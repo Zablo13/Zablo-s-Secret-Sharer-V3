@@ -101,11 +101,7 @@ W	Clear screen
 V	Save generated codes to .json
 L	Load codes from .json
 Q	Quit the program
-💾 Save & Load
 
-Use the V key to save shares to a JSON file.
-
-Use the L key to load and view saved shares.
 
 📘 License
 
