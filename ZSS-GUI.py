@@ -224,7 +224,6 @@ def decode_message_gui():
 
 def generate_otp_gui():
     clear_all()
-
     clear_content_frame()
 
     from tkinter.simpledialog import askinteger
@@ -251,11 +250,11 @@ def generate_otp_gui():
 
     codes_global.clear()
     clear_output()
-    for i, key in enumerate(random_codes.keys(), 1):
-        templist = random_codes[key]
+    for key, templist in random_codes.items():
         codes_global[key] = [masterdecode[y] for y in templist]
         code_str = ''.join(codes_global[key])
-        append_output(f'Code{i}: {code_str}')
+        append_output(f'{key}: {code_str}')
+
 
 # --- Save / Load with file dialogs and drag & drop support ---
 
