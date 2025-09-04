@@ -58,18 +58,17 @@ def print_mastercode():
     print(masterdecode)
     print()
     print(mastercode)
-    # Return to menu after showing mastercode
 
 
 def translate_into_mastercode():
     global codes_global
 
     shares = check_int()
-    message = list(input("Message: "))  # takes the message as a list(input())
-    messageMaster = []  # writes the message in mastercode decimal numbers
-    UccMaster = []  # writes UCC in Mastercode
+    message = list(input("Message: "))
+    messageMaster = []
+    UccMaster = []
     c1str = ''
-    ucc_input = input(f"Code1/{shares}: ")
+    ucc_input = input(f'C1: ')
     ucc = list(ucc_input)
 
     for x in ucc:
@@ -80,26 +79,26 @@ def translate_into_mastercode():
             c1str += x
 
     clear()
-    print(f'Code1/{shares}: {c1str}')
+    print(f'C1: {c1str}')
 
     for x in message:
         if x == " ":
             x = SPACE_PLACEHOLDER
-        messageMaster.append(mastercode.get(x, FALLBACK_CODE))  # fallback to 67 for unknown chars
+        messageMaster.append(mastercode.get(x, FALLBACK_CODE))
     for x in ucc:
         if x == " ":
             x = SPACE_PLACEHOLDER
-        UccMaster.append(mastercode.get(x, FALLBACK_CODE))  # fallback to 67 for unknown chars
+        UccMaster.append(mastercode.get(x, FALLBACK_CODE))
 
     if len(messageMaster) < len(UccMaster):
         missing = len(UccMaster) - len(messageMaster)
         for _ in range(missing):
-            messageMaster.append(FALLBACK_CODE)  # 67 == empty space
+            messageMaster.append(FALLBACK_CODE)
     elif len(messageMaster) > len(UccMaster):
         print("Code is too short!")
         return
 
-    codes_global = {}  # reset before new generation
+    codes_global = {}
     codes_global['C1'] = [x for x in c1str]
 
     if shares == 2:
@@ -110,7 +109,7 @@ def translate_into_mastercode():
         code2_list = [masterdecode[x % 100] for x in c2]
         codes_global['C2'] = code2_list
         code2_str = ''.join(code2_list)
-        print(f'Code2/2: {code2_str}')
+        print(f'C2: {code2_str}')
     else:
         pseudo_random_numbers(messageMaster, UccMaster, shares)
 
@@ -137,7 +136,7 @@ def last_code(messageMaster, random_codes, UccMaster, shares):
         templist = random_codes[key]
         codes_global[key] = [masterdecode[y] for y in templist]
         messageOut = ''.join(codes_global[key])
-        print(f'Code{i}/{shares}:', messageOut)
+        print(f'{key}: {messageOut}')
 
     mdtemp = list(zip(*random_codes.values()))
     copylist = []
@@ -146,14 +145,14 @@ def last_code(messageMaster, random_codes, UccMaster, shares):
 
     finalSum = list(sum(i) for i in (zip(copylist, UccMaster)))
     copylist.clear()
-    copylist = [x % 100 for x in finalSum]  # keep as integers
-    last_code_list = [((m - c) % 100) for m, c in zip(messageMaster, copylist)]  # modulo correction
+    copylist = [x % 100 for x in finalSum]
+    last_code_list = [((m - c) % 100) for m, c in zip(messageMaster, copylist)]
 
     last_code_chars = [masterdecode[x] for x in last_code_list]
 
     codes_global[f'C{shares}'] = last_code_chars
     messageOut = ''.join(last_code_chars)
-    print(f'Code{shares}/{shares}:', messageOut)
+    print(f'C{shares}: {messageOut}')
 
 
 def decode_message():
@@ -164,9 +163,9 @@ def decode_message():
 
     for _ in range(shares):
         key = f'C{x}'
-        value = list(input(f'Code{x}:  '))
+        value = list(input(f'{key}: '))
         try:
-            validate_code_input(value)  # Optional: also validate here to avoid spaces
+            validate_code_input(value)
         except ValueError as e:
             print(f"[Error] {e}")
             return
@@ -229,24 +228,21 @@ def generate_otp():
 
     for x in range(range_low, range_high + 1):
         key = f'C{x}'
-        value = []
-        for _ in range(count):
-            value.append(randbelow(100))
+        value = [randbelow(100) for _ in range(count)]
         random_codes[key] = value
 
     codes_global = {}
-    for i, x in enumerate(random_codes.keys(), 1):
-        templist = random_codes[x]
-        codes_global[x] = [masterdecode[y] for y in templist]
-        messageOut = ''.join(codes_global[x])
-        print(f'Code{i}', messageOut)
+    for key, values in random_codes.items():
+        codes_global[key] = [masterdecode[y] for y in values]
+        messageOut = ''.join(codes_global[key])
+        print(f'{key}: {messageOut}')
 
 
 def menu():
     global codes_global
     print()
     menu_choice = input("(S)plit, (C)ombine, (M)astercode, (O)TP, (W)ipe, Sa(V)e, (L)oad, (Q)uit? ").lower()
-    if menu_choice == "s":  # Splitter
+    if menu_choice == "s":
         try:
             translate_into_mastercode()
         except ValueError as e:
@@ -259,12 +255,12 @@ def menu():
         clear()
     elif menu_choice == "o":
         generate_otp()
-    elif menu_choice == "v":  # Save codes
+    elif menu_choice == "v":
         if codes_global:
             save_codes_to_json(codes_global)
         else:
             print("No codes generated or loaded yet to save.\n")
-    elif menu_choice == "l":  # Load codes
+    elif menu_choice == "l":
         loaded = load_codes_from_json()
         if loaded:
             codes_global = loaded
